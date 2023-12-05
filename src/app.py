@@ -112,7 +112,7 @@ for canton in cantons:
             text=df4_aux['canton_name'],
             hovertemplate="<b>%{text}</b><br><br>" +
                 "Yearly Production (MWh): %{y:,.0f}<br>" +
-                "Tariff for 2016: %{x:$,.0f}<br>" +
+                "Tariff for 2016 (CHF): %{x:,.0f}<br>" +
                 "Installed Electrical Capacity (MW): %{marker.size:,}" +
                 "<extra></extra>"
         )
@@ -145,38 +145,16 @@ st.plotly_chart(fig4)
 # Flow control for dataset sample
 if show_df == "Yes":
     if map == "Installed Electrical Capacity":
-        st.caption(f'This is the dataset sample for Installed Electrical Capacity:')
+        st.caption(f'This is the dataset sample for Installed Electrical Capacity (MW):')
         st.dataframe(data=df4_elect_cap_pivot)
 
     if map == "Yearly Production":
-        st.caption(f'This is the dataset sample for Yearly Production:')
+        st.caption(f'This is the dataset sample for Yearly Production (MWh):')
         st.dataframe(data=df4_prod_pivot)
 
     if map == "Tariff (2016)": 
-        st.caption(f'This is the dataset sample for Tariff in 2016:')
+        st.caption(f'This is the dataset sample for Tariff in 2016 (CHF):')
         st.dataframe(data=df4_tariff_pivot)
 
 
 # st.balloons()
-
-# map: production
-# fig42 = px.choropleth_mapbox(df4_prod_pivot, geojson=geo_data, color=df4_prod_pivot['production'],
-#                            locations=df4_prod_pivot.index.values, featureidkey="properties.kan_name", 
-#                            color_continuous_scale='Blackbody', range_color=[0, 450000], 
-#                            hover_name=df4_prod_pivot.index.values)
-
-# fig42.update_layout(mapbox_style="carto-positron",
-#                    mapbox_zoom=6.5, mapbox_center = {"lat": 46.8182, "lon": 8.2275})
-                   
-# fig42.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-
-# # map: tariff
-# fig43 = px.choropleth_mapbox(df4_tariff_pivot, geojson=geo_data, color=df4_tariff_pivot['tariff'],
-#                            locations=df4_tariff_pivot.index.values, featureidkey="properties.kan_name", 
-#                            color_continuous_scale='Hot', range_color=[1000000, 90000000], 
-#                            hover_name=df4_tariff_pivot.index.values)
-
-# fig43.update_layout(mapbox_style="carto-positron",
-#                    mapbox_zoom=6.5, mapbox_center = {"lat": 46.8182, "lon": 8.2275})
-                   
-# fig43.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
