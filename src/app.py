@@ -58,25 +58,24 @@ df4_tariff_pivot = pd.pivot_table(df4, index='canton_name', values = 'tariff', a
 
 # Add title and header
 st.title("Renewable Power Plants in Switzerland")
-st.header("Electrical capacity | Production | Tariff by cantons")
+st.subheader("Electrical capacity | Production | Tariff by cantons")
 url = 'https://open-power-system-data.org/'
 st.write('Data Source:', url)
 
 # page layout
 left_column, middle_column, right_column = st.columns([2, 1, 1])
 
-# Widgets: checkbox for dataset sample
-if st.checkbox("Show Dataframe"):
-    st.subheader('This is the dataset sample:')
-    st.dataframe(data=df4.head())
-
 # Widgets: selectbox for maps
-maps = ["Installed Electrical Capacity"]+["Yearly Production"]+["Tariff"]
+maps = ["Installed Electrical Capacity"]+["Yearly Production"]+["Tariff (2016)"]
 map = left_column.selectbox("Choose a map type", maps)
 
 # Widgets: radio buttons
 show_scatt = middle_column.radio(
     label='Show Scatter Plot', options=['Yes', 'No'])
+
+# Widgets: radio buttons
+show_df = right_column.radio(
+    label='Show Dataframe', options=['Yes', 'No'])
 
 # Flow control and plotting (maps)
 if map == "Installed Electrical Capacity":
@@ -91,7 +90,7 @@ elif map == "Yearly Production":
     map_colorscale = 'Blackbody'
     map_colorrange = [0, 450000]
 
-elif map == "Tariff": 
+elif map == "Tariff (2016)": 
     fig4_pivot = df4_tariff_pivot
     map_color = 'tariff'
     map_colorscale = 'Hot'
@@ -114,7 +113,7 @@ for canton in cantons:
             hovertemplate="<b>%{text}</b><br><br>" +
                 "Yearly Production (MWh): %{y:,.0f}<br>" +
                 "Tariff for 2016: %{x:$,.0f}<br>" +
-                "Electrical Capacity (MW): %{marker.size:,}" +
+                "Installed Electrical Capacity (MW): %{marker.size:,}" +
                 "<extra></extra>"
         )
     )
@@ -141,6 +140,22 @@ fig4.update_layout(mapbox_style="carto-positron",
 fig4.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 st.plotly_chart(fig4)
+
+
+# Flow control for dataset sample
+if show_df == "Yes":
+    if map == "Installed Electrical Capacity":
+        st.caption(f'This is the dataset sample for Installed Electrical Capacity:')
+        st.dataframe(data=df4_elect_cap_pivot)
+
+    if map == "Yearly Production":
+        st.caption(f'This is the dataset sample for Yearly Production:')
+        st.dataframe(data=df4_prod_pivot)
+
+    if map == "Tariff (2016)": 
+        st.caption(f'This is the dataset sample for Tariff in 2016:')
+        st.dataframe(data=df4_tariff_pivot)
+
 
 # st.balloons()
 
